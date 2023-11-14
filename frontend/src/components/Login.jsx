@@ -27,7 +27,7 @@ function Login () {
                     console.log(response.data.nombre)
                     console.log(response.data.rol)
                     if(response && response.data.nombre !==undefined){
-                        console.log('Entro')
+                        console.log('Datos enviados')
                         dispatch(loginActions.login({
                             name:response.data.nombre,
                             rol:response.data.rol

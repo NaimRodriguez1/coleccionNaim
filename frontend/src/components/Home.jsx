@@ -59,9 +59,9 @@ return <>
                 </Grid>
                 </Toolbar>
         </AppBar>
-        <Paper elevation={3} sx={{mt:2}}>
+        <Paper elevation={3} sx={{mt:3,ml:10,mr:10}}>
                 <Box component='form' autoComplete='off'>
-                <Grid container spacing={10} mt={1}>
+                <Grid container spacing={10} mt={0} alignContent={'center'}>
                         <Grid item ml={5} >
                                 <TextField
                                 label='Nombre'

@@ -17,7 +17,7 @@ return result.affectedRows
 async function getData (req, res) {
  //La variable rows almacena los datos obtenidos de la consulta select.
 const rows = await db.query(
-`AQUÍ VA LA CONSULTA`
+`SELECT * FROM coleccion`
 );
 //Los datos obtenidos de la consulta del select los paso por la función helper para que
 //en el caso de que no haya datos devueltos, me devuelva un array vacío.
@@ -35,7 +35,7 @@ async function deleteData (req, res) {
 
 const data = req.query
 const result = await db.query(
-`AQUÍ VA LA CONSULTA`
+`DELETE FROM coleccion where id=?`
 )
 /*En la variable result se almacena lo que devueve la consulta. Si accedemos a effectedRow nos da el número de filas de la base de
 datos que ha sido borrado. Si ese número es mayor que cero es que ha habido borrado en la base de datos.*/

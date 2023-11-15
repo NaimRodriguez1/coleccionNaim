@@ -21,6 +21,19 @@ const [item,setItem]=useState({nombre:'',marca:'',tipo:'',precio:''})
 const[tableData,setTableData]=useState([])
 
 
+console.log('Datos del usuario en el store: ', userData)
+const handleLogout = (e) => {
+dispatch(loginActions.logout());
+navigate('/');
+};
+
+useEffect(()=>{
+        if (!isLoggedin) {
+        navigate('/')
+        }
+        handleGetItem()
+        }, [isLoggedin, navigate])
+
 const handleSaveItem=(event)=>{
 fetch(`http://localhost:3030/addItem?nombre=${item.nombre}&marca=${item.marca}&tipo=${item.tipo}&precio=${item.precio}`)
 .then(response => response.json())
@@ -58,6 +71,9 @@ fetch(`http://localhost:3030/deleteItem?id=${id}`)
 if(response){
         handleGetItem()
         alert('Datos eliminados correctamente')
+        if (tableData.length === 1) {
+                setTableData([]);
+        }
 }
 }).catch(()=>{
         setError("Error al eleiminar datos")
@@ -66,20 +82,13 @@ if(response){
 
 
   // Efecto secundario para redirigir al usuario si no ha iniciado sesión
-useEffect(()=>{
-if (!isLoggedin) {
-navigate('/')
-}
-handleGetItem()
-}, [isLoggedin, navigate])
+
 
 
   // Función para manejar el cierre de sesión
-console.log('Datos del usuario en el store: ', userData)
-const handleLogout = (e) => {
-dispatch(loginActions.logout());
-navigate('/');
-};
+
+
+
 
 
 
@@ -109,7 +118,7 @@ return <>
         </Toolbar>
 </AppBar>
 <Paper elevation={3} sx={{mt:3,ml:10,mr:10}}>
-        <Box component='form' autoComplete='off' onSubmit={handleSaveItem}>
+        <Box>
         <Grid container spacing={10} mt={0} alignContent={'center'}>
                 <Grid item ml={5} >
                         <TextField
@@ -146,7 +155,7 @@ return <>
                         </TextField>
                 </Grid>
                 <Grid item mr={5} mb={5} >
-                        <Button type='submit' variant='contained' startIcon={<AddBoxIcon/>}>Insertar</Button>
+                        <Button variant='contained' startIcon={<AddBoxIcon/>} onClick={handleSaveItem} >Insertar</Button>
                 </Grid>
         </Grid>
         </Box>

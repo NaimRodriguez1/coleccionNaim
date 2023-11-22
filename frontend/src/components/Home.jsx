@@ -9,6 +9,7 @@ import { useState } from 'react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import BuildIcon from '@mui/icons-material/Build';
 
 
 function Home() {
@@ -19,6 +20,7 @@ const [error,setError]=useState("")
 const isLoggedin = userData.isAutenticated;
 const [item,setItem]=useState({nombre:'',marca:'',tipo:'',precio:''})
 const[tableData,setTableData]=useState([])
+const isAdmin=userData.userRol==='admin'
 
 
 console.log('Datos del usuario en el store: ', userData)
@@ -40,6 +42,7 @@ fetch(`http://localhost:3030/addItem?nombre=${item.nombre}&marca=${item.marca}&t
 .then(response =>{
 if(response){
         handleGetItem()
+        setItem({ nombre: '', marca: '', tipo: '', precio: '' });
 }
 }).catch(()=>{
         setError("Error al conectar la servidor")
@@ -95,62 +98,78 @@ if(response){
 
   // Renderizado del componente Home
 return <>
-<AppBar position='static' sx={{bgcolor:'lightgreen '}}>
+<AppBar position='static' sx={{bgcolor:'black'}}>
         <Toolbar>
         <Grid container spacing={30}>
                 <Grid item>
-                        <PersonIcon/>
+                        {isAdmin ?(
+                                <BuildIcon/>
+                        ) : (
+                                <PersonIcon/>
+                        )}
+                        
+                        
                         <Typography>{userData.userName}</Typography>
                 </Grid>
                 <Grid item mt={2}>
                         <Link to={'/home'}>Inicio</Link>
                 </Grid>
-                <Grid item mt={2} >
+                {isAdmin && (
+                        <Grid item mt={2} >
                         <Link>Informes</Link>
                 </Grid>
+                )}
                 <Grid item mt={2}>
                         <Link>Ayuda</Link>
                 </Grid>
         </Grid>
         <Grid>
-                <Button variant='contained' startIcon={<LogoutIcon/>} sx={{bgcolor:'lightcoral'}} onClick={handleLogout}  >Salir</Button>
+                <Button variant='contained' startIcon={<LogoutIcon/>} sx={{bgcolor:'gray'}} onClick={handleLogout}  >Salir</Button>
         </Grid>
         </Toolbar>
 </AppBar>
-<Paper elevation={3} sx={{mt:3,ml:10,mr:10}}>
+<Paper elevation={3} sx={{mt:3,ml:10,mr:10,bgcolor:'lightblue'}}>
         <Box>
         <Grid container spacing={10} mt={0} alignContent={'center'}>
                 <Grid item ml={5} >
                         <TextField
+                        sx={{bgcolor:'white',border:'1px solid black'}}
                         label='Nombre'
                         required
                         type='text'
                         onChange={(event)=>setItem({...item,nombre:event.target.value})}
+                        value={item.nombre}
                         >
                         </TextField>
                 </Grid>
                 <Grid item>
                         <TextField
+                        sx={{bgcolor:'white',border:'1px solid black'}}
                         label='Marca'
                         required
                         onChange={(event)=>setItem({...item,marca:event.target.value})}
+                        value={item.marca}
                         >
                         </TextField>
                 </Grid>
                 <Grid item mb={5}>
                         <TextField
+                        sx={{bgcolor:'white',border:'1px solid black'}}
                         label='Tipo'
                         required
                         type='text'
                         onChange={(event)=>setItem({...item,tipo:event.target.value})}
+                        value={item.tipo}
                         >
                         </TextField>
                 </Grid>
                 <Grid item mb={5} flexGrow={1} >
                         <TextField
+                        sx={{bgcolor:'white',border:'1px solid black'}}
                         label='Precio'
                         required
                         onChange={(event)=>setItem({...item,precio:event.target.value})}
+                        value={item.precio}
                         >
                         </TextField>
                 </Grid>
@@ -165,22 +184,26 @@ return <>
 <TableContainer sx={{mt:5}}>
         <Table aria-label='Table'>
                 <TableHead>
-                        <TableRow>
-                                <TableCell></TableCell>
-                                <TableCell>Nombre</TableCell>
-                                <TableCell>Marca</TableCell>
-                                <TableCell>Tipo</TableCell>
-                                <TableCell>Precio</TableCell>
+                        <TableRow sx={{bgcolor:'black'}} >
+                                {isAdmin &&(
+                                        <TableCell></TableCell>
+                                )}
+                                <TableCell sx={{color:'white'}} >Nombre</TableCell>
+                                <TableCell sx={{color:'white'}} >Marca</TableCell>
+                                <TableCell sx={{color:'white'}} >Tipo</TableCell>
+                                <TableCell sx={{color:'white'}} >Precio</TableCell>
                         </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody sx={{bgcolor:'lightblue'}} >
                         {tableData.map((row)=> (
                                 <TableRow key={row.id}>
-                                        <TableCell>
+                                        {isAdmin && (
+                                                <TableCell sx={{ml:'5'}} >
                                                 <Button onClick={()=>handleDeleteItem(row.id)}>
                                                         <DeleteForeverIcon/>
                                                 </Button>
                                         </TableCell>
+                                        )}
                                         <TableCell>
                                                 {row.nombre}
                                         </TableCell>

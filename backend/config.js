@@ -2,7 +2,7 @@
 const config = {
     db: {
         host:"localhost",
-        user:"naim",
+        user:"Naim",
         password: "1234",
         database: "bdgestion",
         connectTimeout: 60000,

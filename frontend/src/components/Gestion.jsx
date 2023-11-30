@@ -13,16 +13,15 @@ import BuildIcon from '@mui/icons-material/Build';
 import TopBar from './TopBar';
 
 
-function Home() {
+function Gestion() {
 const dispatch = useDispatch()
 const navigate = useNavigate()
 const userData = useSelector (state => state.login)
 const [error,setError]=useState("")
 const isLoggedin = userData.isAutenticated;
-const [item,setItem]=useState({nombre:'',marca:'',tipo:'',precio:''})
+const [item,setItem]=useState({nombre:'',login:'',password:'',rol:''})
 const[tableData,setTableData]=useState([])
 const isAdmin=userData.userRol==='admin'
-const isInvitado=userData.userRol==='invitado'
 
 
 console.log('Datos del usuario en el store: ', userData)
@@ -39,12 +38,12 @@ useEffect(()=>{
         }, [isLoggedin, navigate])
 
 const handleSaveItem=(event)=>{
-fetch(`http://localhost:3030/addItem?nombre=${item.nombre}&marca=${item.marca}&tipo=${item.tipo}&precio=${item.precio}`)
+fetch(`http://localhost:3030/addUser?nombre=${item.nombre}&login=${item.login}&password=${item.password}&rol=${item.rol}`)
 .then(response => response.json())
 .then(response =>{
 if(response){
         handleGetItem()
-        setItem({ nombre: '', marca: '', tipo: '', precio: '' });
+        setItem({ nombre: '', login: '', password: '', rol: '' });
 }
 }).catch(()=>{
         setError("Error al conectar al servidor")
@@ -53,7 +52,7 @@ if(response){
 
 
 const handleGetItem=(event)=>{
-fetch(`http://localhost:3030/getItems`)
+fetch(`http://localhost:3030/getUSer`)
 .then(response => response.json())
 .then(response =>{
 if(response){
@@ -70,7 +69,7 @@ console.log(response)
 
 
 const handleDeleteItem=(id)=>{
-fetch(`http://localhost:3030/deleteItem?id=${id}`)
+fetch(`http://localhost:3030/deleteUser?id=${id}`)
 .then(response => response.json())
 .then(response =>{
 if(response){
@@ -104,40 +103,37 @@ return <>
                 <Grid item>
                         <TextField
                         sx={{bgcolor:'white',border:'1px solid black'}}
-                        label='Marca'
+                        label='Login'
                         required
-                        onChange={(event)=>setItem({...item,marca:event.target.value})}
-                        value={item.marca}
+                        onChange={(event)=>setItem({...item,login:event.target.value})}
+                        value={item.login}
                         >
                         </TextField>
                 </Grid>
                 <Grid item mb={5}>
                         <TextField
                         sx={{bgcolor:'white',border:'1px solid black'}}
-                        label='Tipo'
+                        label='Password'
                         required
                         type='text'
-                        onChange={(event)=>setItem({...item,tipo:event.target.value})}
-                        value={item.tipo}
+                        onChange={(event)=>setItem({...item,password:event.target.value})}
+                        value={item.password}
                         >
                         </TextField>
                 </Grid>
                 <Grid item mb={5} flexGrow={1} >
                         <TextField
                         sx={{bgcolor:'white',border:'1px solid black'}}
-                        label='Precio'
+                        label='Rol'
                         required
-                        onChange={(event)=>setItem({...item,precio:event.target.value})}
-                        value={item.precio}
+                        onChange={(event)=>setItem({...item,rol:event.target.value})}
+                        value={item.rol}
                         >
                         </TextField>
                 </Grid>
-                {!isInvitado &&(
-                        <Grid item mr={5} mb={5} >
-                                <Button variant='contained' startIcon={<AddBoxIcon/>} onClick={handleSaveItem} >Insertar</Button>
-                        </Grid>
-                )}
-                
+                <Grid item mr={5} mb={5} >
+                        <Button variant='contained' startIcon={<AddBoxIcon/>} onClick={handleSaveItem} >Insertar</Button>
+                </Grid>
         </Grid>
         </Box>
 </Paper>
@@ -151,9 +147,9 @@ return <>
                                         <TableCell></TableCell>
                                 )}
                                 <TableCell sx={{color:'white'}} >Nombre</TableCell>
-                                <TableCell sx={{color:'white'}} >Marca</TableCell>
-                                <TableCell sx={{color:'white'}} >Tipo</TableCell>
-                                <TableCell sx={{color:'white'}} >Precio</TableCell>
+                                <TableCell sx={{color:'white'}} >Login</TableCell>
+                                <TableCell sx={{color:'white'}} >Password</TableCell>
+                                <TableCell sx={{color:'white'}} >Rol</TableCell>
                         </TableRow>
                 </TableHead>
                 <TableBody sx={{bgcolor:'lightblue'}} >
@@ -170,13 +166,13 @@ return <>
                                                 {row.nombre}
                                         </TableCell>
                                         <TableCell>
-                                                {row.marca}
+                                                {row.login}
                                         </TableCell>
                                         <TableCell>
-                                                {row.tipo}
+                                                {row.password}
                                         </TableCell>
                                         <TableCell>
-                                                {row.precio}
+                                                {row.rol}
                                         </TableCell>
                                 </TableRow>
                         ))}
@@ -189,4 +185,4 @@ return <>
 
 
 
-export default Home;
+export default Gestion;

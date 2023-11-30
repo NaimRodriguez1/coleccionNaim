@@ -7,6 +7,8 @@ const login = require('./services/login')
 const port  = 3030
 const items = require('./services/item')
 
+const users=require('./services/usuario')
+
 
 const app = express()
 app.use(express.json())
@@ -67,8 +69,3 @@ app.get('/deleteItem',async function(req,res,next){
        (err);
        }
 })
-
-
-//Iniciamos la API
-app.listen(port)
-console.log('API escuchando en el puerto ' + port)

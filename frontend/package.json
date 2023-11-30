@@ -6,6 +6,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@material-table/core": "^6.3.0",
+    "@material-table/exporters": "^1.2.17",
     "@mui/icons-material": "^5.14.16",
     "@mui/material": "^5.14.17",
     "@reduxjs/toolkit": "^1.9.7",
